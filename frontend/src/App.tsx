@@ -1,29 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import axios from "axios";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <button className="bg-red-500 text-white font-bold py-2 px-4 ">
-          Hello Tailwind
-        </button>
-      </header>
-    </div>
-  );
+	const [data, setData] = React.useState<{ text?: string }>();
+	const url = "http://127.0.0.1:8000";
+
+	const GetData = () => {
+		axios.get(url).then((res) => {
+			setData(res.data);
+		});
+	};
+	return (
+		<div>
+			<div>処理内容
+			{data?.text}</div>
+			<button 
+			onClick={GetData}
+			className="border border-gray-300 rounded-md p-2 m-2 bg-blue-500 text-white hover:bg-blue-700"
+			>データを取得</button>
+		</div>
+	);
 }
 
 export default App;
