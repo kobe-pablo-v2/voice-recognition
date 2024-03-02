@@ -18,7 +18,14 @@ app.add_middleware(
 
 @app.get("/")
 def text():
-    model = whisper.load_model("large")
+    model = whisper.load_model("small")
     result = model.transcribe("./sample/sample.wav", fp16=False)
+    print(result["text"])
+    return {"text":result['text']}
+
+@app.get("/sample1")
+def text():
+    model = whisper.load_model("small")
+    result = model.transcribe("./sample/sample2.wav", fp16=False)
     print(result["text"])
     return {"text":result['text']}
