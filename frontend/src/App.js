@@ -57,7 +57,7 @@ function App() {
                 <button onClick={GetData1} className="border border-gray-300 rounded-md p-2 m-2 bg-blue-500 text-white hover:bg-blue-700">sample2</button>
                 <button onClick={Delete} className="border border-gray-300 rounded-md p-2 m-2 bg-blue-500 text-white hover:bg-blue-700">削除</button>
                 <Routes>
-				<Route path="/" element={<DataList dataList={dataList} />} />
+				<Route path="/" element={<DataList dataList={dataList}  setDataList={setDataList}/>} />
     			<Route path="/edit/:id" element={<EditTextPage />} /> {/* textId を id に変更 */}
                 </Routes>
             </div>
