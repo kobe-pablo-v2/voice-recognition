@@ -25,7 +25,7 @@ const DataList = ({ dataList, setDataList }) => { // setDataList 関数を props
   };
 
   return (
-    <div className='w-10/12 ml-10 my-10 border-slate-400 bg-white border border-4 rounded-lg'>
+    <div className='w-10/12 m-10 border-slate-400 bg-white rounded-lg'>
       {dataList.map((data) => (
         <div key={data.id} className="flex items-center text-2xl font-bold my-3">
           <input
@@ -35,7 +35,7 @@ const DataList = ({ dataList, setDataList }) => { // setDataList 関数を props
             className='size-4 m-2'
           />
           {data.fileName}
-          <button onClick={() => handleEdit(data.id)} className='border border-gray-300 rounded-md p-2 m-2 bg-blue-500 text-white hover:bg-blue-700'>編集</button>
+          <button onClick={() => handleEdit(data.id)} className='border border-gray-300 rounded-md p-1 m-3 bg-blue-500 text-white hover:bg-blue-700'>編集</button>
         </div>
       ))}
     </div>
