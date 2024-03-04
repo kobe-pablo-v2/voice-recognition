@@ -25,7 +25,7 @@ const DataList = ({ dataList, setDataList }) => { // setDataList 関数を props
   };
 
   return (
-    <div className='w-10/12 m-10 border-slate-400 bg-white rounded-lg'>
+    <div className='w-10/12 ml-10 mt-5 mb-10 bg-white rounded-lg'>
       {dataList.map((data) => (
         <div key={data.id} className="flex items-center text-2xl font-bold my-3">
           <input

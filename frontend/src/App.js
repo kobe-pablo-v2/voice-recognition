@@ -47,19 +47,34 @@ function App() {
 		window.location.reload();
 	}
 
+    const updateEditDataList = (id, newText, newFileName) => {
+        const dataList = JSON.parse(localStorage.getItem('dataList') || '[]');
+        const updatedDataList = dataList.map(item => {
+        if (item.id === id) {
+            return { ...item, text: newText, fileName: newFileName };
+        }
+        return item;
+        });
+        localStorage.setItem('dataList', JSON.stringify(updatedDataList));
+    };
 
     return (
         <BrowserRouter>
-            <div className="bg-cyan-950 w-screen h-screen">
-                <header className="bg-blue-500 pb-2 text-white text-4xl font-bold">whisper(仮)</header>
-                <div className="text-white text-2xl font-bold mt-3">出力内容</div>
-                <button onClick={GetData} className="border border-gray-300 rounded-md p-2 m-2 bg-blue-500 text-white hover:bg-blue-700">sample1</button>
-                <button onClick={GetData1} className="border border-gray-300 rounded-md p-2 m-2 bg-blue-500 text-white hover:bg-blue-700">sample2</button>
-                <button onClick={Delete} className="border border-gray-300 rounded-md p-2 m-2 bg-blue-500 text-white hover:bg-blue-700">削除</button>
-                <Routes>
-				<Route path="/" element={<DataList dataList={dataList}  setDataList={setDataList}/>} />
-    			<Route path="/edit/:id" element={<EditTextPage />} /> {/* textId を id に変更 */}
-                </Routes>
+            <div className="bg-slate-100 w-screen h-screen static">
+            <header className="flex justify-center bg-teal-500 brightness-95 p-2 border-b-8 border-b-cyan-950 text-white text-4xl font-bold">whisper(仮)</header>
+            <div className="fixed left-10 right-0">
+            <div className="text-black text-2xl font-bold ml-10 size-fit fixed top-20 left-10 right-0">出力内容</div>
+            <button onClick={Delete} className="ml-36 mt-4 border border-gray-300 rounded-md px-2 py-1 bg-blue-500 text-white hover:bg-blue-700 grid ">削除</button>
+            <Routes>
+			<Route path="/" element={<DataList dataList={dataList}  setDataList={setDataList}/>} />
+            <Route path="/edit/:id" element={<EditTextPage updateDataList={updateEditDataList} />} />
+            </Routes>
+            <div className="m-10">
+            <div className="text-black text-2xl font-bold ">ファイル一覧</div>
+            <button onClick={GetData} className="border border-gray-300 rounded-md p-2 m-2 bg-blue-500 text-white hover:bg-blue-700">sample1</button>
+            <button onClick={GetData1} className="border border-gray-300 rounded-md p-2 m-2 bg-blue-500 text-white hover:bg-blue-700">sample2</button>
+            </div>
+            </div>
             </div>
         </BrowserRouter>
     );
