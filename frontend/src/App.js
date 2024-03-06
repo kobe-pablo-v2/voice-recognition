@@ -68,7 +68,7 @@ function App() {
         fetchFiles();
     }, []);
 
-    const output = (fileName) => {
+    const outPut = (fileName) => {
         axios.get(`${url}/text/${fileName}`).then((res) => {
             const newdata = { id: uuidv4(), text: res.data.text, delete: false, fileName: fileName };
             updateDataList(newdata);
@@ -76,7 +76,6 @@ function App() {
             console.error("Error fetching the text:", error);
         });
     };
-    
 
     return (
         <BrowserRouter>
@@ -89,20 +88,17 @@ function App() {
 			<Route path="/" element={<DataList dataList={dataList}  setDataList={setDataList}/>} />
             <Route path="/edit/:id" element={<EditTextPage updateDataList={updateEditDataList} />} />
             </Routes>
-            <div className="m-10">
-            <div className="text-black text-2xl font-bold ">ファイル一覧</div>
-            <button onClick={GetData} className="border border-gray-300 rounded-md p-2 m-2 bg-blue-500 text-white hover:bg-blue-700">sample1</button>
-            <button onClick={GetData1} className="border border-gray-300 rounded-md p-2 m-2 bg-blue-500 text-white hover:bg-blue-700">sample2</button>
-            </div>
-            <h2>Files List</h2>
+            <div className="text-2xl font-bold ml-10">ファイル一覧</div>
+            <div className="w-10/12 ml-10 mt-5 mb-10 bg-white rounded-lg">
             <ul>
             {files.map(file => (
-            <li key={file.id}>
+            <li key={file.id} className="text-2xl font-bold ml-8">
             {file.name}
-            <button onClick={() => output(file.name.replace('.wav', ''))} className="border border-gray-300 rounded-md p-2 m-2 bg-blue-500 text-white hover:bg-blue-700">出力</button>
+            <button onClick={() => outPut(file.name.replace('.wav', ''))} className="border border-gray-300 rounded-md p-2 m-2 bg-blue-500 text-white hover:bg-blue-700">出力</button>
             </li>
             ))}
             </ul>
+            </div>
             </div>
             </div>
         </BrowserRouter>

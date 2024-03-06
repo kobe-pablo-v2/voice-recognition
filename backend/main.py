@@ -1,14 +1,14 @@
-import whisper
-from fastapi import FastAPI
+# main.py
+
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from uuid import uuid4
+import whisper
 import os
+from uuid import uuid4
 
 app = FastAPI()
 
-origins = [
-    "http://localhost:3000",
-]
+origins = ["http://localhost:3000",]
 
 app.add_middleware(
     CORSMiddleware,
@@ -18,18 +18,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/{fileName}")
+@app.get("/text/{fileName}")
 def get_text(fileName: str):
-    model = whisper.load_model("small")
-    result = model.transcribe(f"./source/{fileName}.wav", fp16=False)
-    return {"text": result['text']}
+    file_path = f"./source/{fileName}.wav"
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="File not found")
 
-@app.get("/sample1")
-def text():
-    model = whisper.load_model("small")
-    result = model.transcribe("./source/sample2.wav", fp16=False)
-    print(result["text"])
-    return {"text":result['text']}
+    try:
+        model = whisper.load_model("small")
+        result = model.transcribe(file_path, fp16=False)
+        return {"text": result['text']}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/files")
 async def get_files():
