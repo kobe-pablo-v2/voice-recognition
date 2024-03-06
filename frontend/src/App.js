@@ -25,20 +25,6 @@ function App() {
         localStorage.setItem("dataList", JSON.stringify(updatedDataList));
     };
 
-    const GetData = () => {
-        axios.get(url).then((res) => {
-            const newdata = { id: uuidv4(), text: res.data.text, delete: false, fileName: "sample1"};
-            updateDataList(newdata);
-        });
-    };
-
-    const GetData1 = () => {
-        axios.get(url + "/sample1").then((res) => {
-            const newdata = { id: uuidv4(), text: res.data.text, delete: false, fileName: "sample2",};
-            updateDataList(newdata);
-        });
-    };
-
 	// ローカルストレージのデータを削除するした後に更新する関数
 	const Delete = () => {
 		const filteredDataList = dataList.filter(item => !item.delete);
@@ -77,6 +63,8 @@ function App() {
         });
     };
 
+    const reload = () => {window.location.reload();};
+
     return (
         <BrowserRouter>
             <div className="bg-slate-100 w-screen h-screen static">
@@ -88,7 +76,10 @@ function App() {
 			<Route path="/" element={<DataList dataList={dataList}  setDataList={setDataList}/>} />
             <Route path="/edit/:id" element={<EditTextPage updateDataList={updateEditDataList} />} />
             </Routes>
+            <div className="flex justify-start">
             <div className="text-2xl font-bold ml-10">ファイル一覧</div>
+            <button onClick={reload} className="ml-3 border border-gray-300 rounded-md px-2 py-1 bg-blue-500 text-white hover:bg-blue-700 grid ">更新</button>
+            </div>
             <div className="w-10/12 ml-10 mt-5 mb-10 bg-white rounded-lg">
             <ul>
             {files.map(file => (
