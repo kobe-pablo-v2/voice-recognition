@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DataList from "./DataList";
 import { v4 as uuidv4 } from "uuid";
@@ -6,9 +6,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import EditTextPage from './EditTextPage';
 
 function App() {
-    const [dataList, setDataList] = React.useState([]);
-    const url = "http://127.0.0.1:8000";
-	
+    const [dataList, setDataList] = useState([]);
+    const [files, setFiles] = useState([]);
+	const url = "http://127.0.0.1:8000";
 
     // ローカルストレージからデータリストを読み込む
     useEffect(() => {
@@ -58,6 +58,26 @@ function App() {
         localStorage.setItem('dataList', JSON.stringify(updatedDataList));
     };
 
+    useEffect(() => {
+        const fetchFiles = async () => {
+        const response = await fetch('http://localhost:8000/files');
+        const data = await response.json();
+        setFiles(data);
+        };
+    
+        fetchFiles();
+    }, []);
+
+    const output = (fileName) => {
+        axios.get(`${url}/text/${fileName}`).then((res) => {
+            const newdata = { id: uuidv4(), text: res.data.text, delete: false, fileName: fileName };
+            updateDataList(newdata);
+        }).catch(error => {
+            console.error("Error fetching the text:", error);
+        });
+    };
+    
+
     return (
         <BrowserRouter>
             <div className="bg-slate-100 w-screen h-screen static">
@@ -74,6 +94,15 @@ function App() {
             <button onClick={GetData} className="border border-gray-300 rounded-md p-2 m-2 bg-blue-500 text-white hover:bg-blue-700">sample1</button>
             <button onClick={GetData1} className="border border-gray-300 rounded-md p-2 m-2 bg-blue-500 text-white hover:bg-blue-700">sample2</button>
             </div>
+            <h2>Files List</h2>
+            <ul>
+            {files.map(file => (
+            <li key={file.id}>
+            {file.name}
+            <button onClick={() => output(file.name.replace('.wav', ''))} className="border border-gray-300 rounded-md p-2 m-2 bg-blue-500 text-white hover:bg-blue-700">出力</button>
+            </li>
+            ))}
+            </ul>
             </div>
             </div>
         </BrowserRouter>
